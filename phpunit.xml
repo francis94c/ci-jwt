@@ -20,8 +20,6 @@
 			<directory suffix=".php">./travis-splint-0.0.2/application/splints/francis94c/ci-jwt</directory>
 			<exclude>
 				<file>travis-splint-0.0.2/application/splints/francis94c/ci-jwt/phpunit/JWTTest.php</file>
-				<directory suffix=".php">./travis-splint-0.0.2/application/splints/francis94c/ci-jwt/views</directory>
-				<directory suffix=".php">./travis-splint-0.0.2/application/splints/francis94c/ci-jwt/phpunit/views</directory>
 			</exclude>
 		</whitelist>
   </filter>
