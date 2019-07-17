@@ -1,0 +1,27 @@
+<phpunit bootstrap="travis-splint-0.0.2/index.php"
+	colors="true"
+	convertErrorsToExceptions="true"
+	convertNoticesToExceptions="true"
+	convertWarningsToExceptions="true"
+	processIsolation="false"
+	stopOnFailure="false"
+	verbose="true"
+	testdox="true">
+	<testsuites>
+		<testsuite name="Splint Test Suite">
+			<file>path/to/text/file.php</file>
+		</testsuite>
+	</testsuites>
+	<logging>
+		<log type="coverage-clover" target="./build/logs/clover.xml"/>
+	</logging>
+	<filter>
+		<whitelist addUncoveredFilesFromWhitelist="true">
+			<directory suffix=".php">./travis-splint-0.0.2/application/splints/francis94c/blog</directory>
+			<exclude>
+				<file>file/to/exclude/from/coverage.php</file>
+				<directory suffix=".php">directory/to/exclude/from/coverage</directory>
+			</exclude>
+		</whitelist>
+  </filter>
+</phpunit>

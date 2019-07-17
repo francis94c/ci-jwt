@@ -1,0 +1,16 @@
+{
+  "name": "package_name",
+  "type": "library",
+  "description": "package_description",
+  "tags": ["splint"],
+  "page": "https://github.com/username/package",
+  "authors": [
+    {
+      "name": "Author Name",
+      "email": "john@doe.com",
+      "page": "website_url",
+      "role": "Developer"
+    }
+  ],
+  "php": ">=7.3"
+}
