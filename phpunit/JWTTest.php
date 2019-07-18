@@ -49,6 +49,8 @@ class JWTTest extends TestCase {
    *
    * RFC7519 Section 4.1
    *
+   * @depends testHeader
+   *
    * @testdox Payload Test.
    */
   public function testPayload():void  {
@@ -71,10 +73,30 @@ class JWTTest extends TestCase {
    *
    * @testdox Test Base64 Function.
    */
-  public function testBase64Functions() {
+  public function testBase64Functions():void {
     $data = "The Quick Brown Fox Jumped over the Lazy Dog.";
     $b64 = base64url_encode($data);
     $this->assertEquals($data, base64url_decode($b64));
+  }
+  /**
+   * [testSigning description]
+   *
+   * @depends testPayload.
+   *
+   * @testdox Test Signing.
+   */
+  public function testSigning():void {
+    $jwt = self::$ci->jwt->sign();
+    $parts = explode(".", $jwt);
+    $header = json_decode(base64url_decode($parts[0]));
+    $this->assertEquals(JWT::HS254, $header["alg"]);
+    $this->assertEquals(JWT::JWT, $header["typ"]);
+    $payload = json_decode(base64url_decode($parts[1]));
+    $this->assertEquals("www.example.com", $payload["iss"]);
+    $this->assertEquals("francis", $payload["sub"]);
+    $this->assertEquals("my_server", $payload["aud"]);
+    $this->assertEquals(23456789967, $payload["exp"]);
+    $this->assertEquals(12345677778, $payload["iat"]);
   }
 }
 ?>
