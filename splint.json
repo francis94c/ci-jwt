@@ -12,5 +12,11 @@
       "role": "Developer"
     }
   ],
-  "php": ">=7.3"
+  "php": ">=7.3",
+  "autoload": {
+    "libraries" : [
+      ["JWT", "jwt"]
+    ],
+    "helpers": ["base64"]
+  }
 }
