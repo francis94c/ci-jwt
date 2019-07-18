@@ -19,8 +19,21 @@ class JWTTest extends TestCase {
    */
   public static function setUpBeforeClass(): void {
     self::$ci =& get_instance();
+    /**
+     * [$params Config Items.]
+     *
+     * @var array
+     *
+     * Description:-
+     *
+     * secret:  The secret strng used in signing the JWT.
+     * alg:     Signing Algorithm.
+     * set_iat: Automatically set issued at time on payloads.
+     */
     $params = [
-      "secret" => "GHfsjfblsgo8r84nNOHHdgdgdgdyf758y8hyttjuoljlhkmjhgO8HOHLHLd"
+      "secret"     => "GHfsjfblsgo8r84nNOHHdgdgdgdyf758y8hyttjuoljlhkmjhgO8HOHLHLd",
+      "alg"        => JWT::HS256,
+      "set_iat"    => true
     ];
     self::$ci->load->package(self::PACKAGE, $params);
   }
@@ -97,6 +110,11 @@ class JWTTest extends TestCase {
     $this->assertEquals("my_server", $payload["aud"]);
     $this->assertEquals(23456789967, $payload["exp"]);
     $this->assertEquals(12345677778, $payload["iat"]);
+  }
+  /**
+   * [testExpired Test expiry date of jwts.]
+   */
+  public function testExpired():void {
   }
 }
 ?>
