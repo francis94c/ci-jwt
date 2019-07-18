@@ -51,7 +51,7 @@ class JWT {
    * @param string $key   [description]
    * @param [type] $value [description]
    */
-  public function payload(string $key, $value): void {
+  public function payload(string $key, $value):void {
     $this->payload[$key] = $value;
   }
   /**
@@ -60,6 +60,25 @@ class JWT {
    */
   public function payloadarray(): array {
     return $this->payload;
+  }
+  /**
+   * [sign description]
+   * @param  [type] $secret [description]
+   * @return [type]         [description]
+   */
+  public function sign(string $secret=null):?string {
+    // $key is $secret;
+    $key = $secret ?? $this->secret;
+    $jwt = base64url_encode(json_encode($this->header));
+    if ($jwt === false) return null;
+    if ($jwt != "") $jwt .= ".";
+    $payload = base64url_encode(json_encode($this->payload));
+    if ($payload === false) return $jwt;
+    $jwt .= $payload;
+    if ($key != "") return $this->sign_token($jwt, $secret, $this->payload["alg"]);
+    return $jwt . ".";
+  }
+  private function sign_token(&$token, $key, $alg):string {
   }
 }
 ?>

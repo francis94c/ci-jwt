@@ -101,15 +101,16 @@ class JWTTest extends TestCase {
   public function testSigning():void {
     $jwt = self::$ci->jwt->sign();
     $parts = explode(".", $jwt);
-    $header = json_decode(base64url_decode($parts[0]));
-    $this->assertEquals(JWT::HS254, $header["alg"]);
+    $header = json_decode(base64url_decode($parts[0]), true);
+    $this->assertEquals(JWT::HS256, $header["alg"]);
     $this->assertEquals(JWT::JWT, $header["typ"]);
-    $payload = json_decode(base64url_decode($parts[1]));
+    $payload = json_decode(base64url_decode($parts[1]), true);
     $this->assertEquals("www.example.com", $payload["iss"]);
     $this->assertEquals("francis", $payload["sub"]);
     $this->assertEquals("my_server", $payload["aud"]);
     $this->assertEquals(23456789967, $payload["exp"]);
     $this->assertEquals(12345677778, $payload["iat"]);
+    // Verify Signature.
   }
   /**
    * [testExpired Test expiry date of jwts.]
