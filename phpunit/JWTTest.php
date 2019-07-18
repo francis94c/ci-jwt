@@ -16,6 +16,8 @@ class JWTTest extends TestCase {
 
   /**
    * Prerquisites for the Unit Tests.
+   *
+   * @covers JWT::__construct
    */
   public static function setUpBeforeClass(): void {
     self::$ci =& get_instance();
