@@ -54,7 +54,7 @@ class JWTTest extends TestCase {
     self::$ci->jwt->header("alg", JWT::HS256);
     self::$ci->jwt->header("typ", JWT::JWT);
     $header = self::$ci->jwt->headerArray();
-    $this->assertEquals(JWT::HS254, $header["alg"]);
+    $this->assertEquals(JWT::HS256, $header["alg"]);
     $this->assertEquals(JWT::JWT, $header["typ"]);
   }
   /**
@@ -94,7 +94,7 @@ class JWTTest extends TestCase {
   /**
    * [testSigning description]
    *
-   * @depends testPayload.
+   * @depends testPayload
    *
    * @testdox Test Signing.
    */
