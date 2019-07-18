@@ -64,6 +64,17 @@ class JWTTest extends TestCase {
     $this->assertEquals(23456789967, $payload["exp"]);
     $this->assertEquals(12345677778, $payload["iat"]);
   }
-
+  /**
+   * [testBase64Methods descriptio]
+   *
+   * @depends testHelperMethodsExist
+   *
+   * @testdox Test Base64 Function.
+   */
+  public function testBase64Functions() {
+    $data = "The Quick Brown Fox Jumped over the Lazy Dog.";
+    $b64 = base64url_encode($data);
+    $this->assertEquals($data, base64url_decode($b64));
+  }
 }
 ?>
