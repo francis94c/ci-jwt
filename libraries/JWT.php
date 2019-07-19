@@ -150,13 +150,9 @@ class JWT {
   }
   /**
    * [sign_token Sign JWT]
-   *
    * @param  string $token base64 url encoded header and payload token pair.
-   *
    * @param  string $key   The scecret used to sign the token.
-   *
    * @param  string $alg   The algorithm used to sign the token.
-   *
    * @return string        Complete JWT.
    */
   private function sign_token(string $token, string $key, string $alg):string {
