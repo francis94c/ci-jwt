@@ -16,23 +16,23 @@ class JWT {
 
   // Internal Variables.
   /**
-   * [private description]
-   * @var [type]
+   * [private Default Signing Secret]
+   * @var string
    */
   private $secret = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
   /**
-   * [private description]
-   * @var [type]
+   * [private JWT header array]
+   * @var array
    */
   private $header = [];
   /**
-   * [private description]
-   * @var [type]
+   * [private JWT payload array]
+   * @var string
    */
   private $payload = [];
   /**
-   * [private description]
-   * @var [type]
+   * [private Allow Unsigned JWT]
+   * @var bool
    */
   private $allow_unsigned = false;
 
@@ -41,26 +41,24 @@ class JWT {
     get_instance()->load->splint("francis94c/ci-jwt", "%base64");
   }
   /**
-   * [init description]
-   * @param  array  $config [description]
-   * @return [type]         [description]
+   * [init For setting config variables.]
+   * @param  array  $config Config Options.
    */
-  function init(array $config) {
+  public function init(array $config) {
     $this->secret = $config["secret"] ?? $this->secret;
     $this->allow_unsigned = $config["allow_unsigned"] ?? $this->allow_unsigned;
   }
   /**
-   * [header description]
-   * @param  [type]     $key   [description]
-   * @param  string|int $value [description]
-   * @return [type]            [description]
+   * [header Add an item to the header array.]
+   * @param  string     $key   Key of the item. e.g "alg", "typ".
+   * @param  string|int $value Value of the item.
    */
   public function header(string $key, $value):void {
     $this->header[$key] = $value;
   }
   /**
-   * [headerArray description]
-   * @return array [description]
+   * [headerArray Returns the header array.]
+   * @return array Header Array.
    */
   public function headerArray(): array {
     return $this->header;
@@ -168,4 +166,3 @@ class JWT {
     return $token . "." . $signature;
   }
 }
-?>
