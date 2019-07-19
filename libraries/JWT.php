@@ -6,6 +6,7 @@ class JWT {
   const JWT = "jwt";
 
   // Signing Algorithms.
+  const NONE  = "none";
   const HS256 = 'HS256';
 
   // JWT Standard Algs to PHP Algs.
@@ -29,9 +30,15 @@ class JWT {
    * @var [type]
    */
   private $payload = [];
+  /**
+   * [private description]
+   * @var [type]
+   */
+  private $allow_unsigned = false;
 
   function __construct($params=null) {
     if ($params != null) $this->init($params);
+    get_instance()->load->splint("francis94c/ci-jwt", "%base64");
   }
   /**
    * [init description]
@@ -40,6 +47,7 @@ class JWT {
    */
   function init(array $config) {
     $this->secret = $config["secret"] ?? $this->secret;
+    $this->allow_unsigned = $config["allow_unsigned"] ?? $this->allow_unsigned;
   }
   /**
    * [header description]
@@ -86,7 +94,9 @@ class JWT {
    * @return [type]         [description]
    */
   public function sign(string $secret=null):?string {
-    // $key is $secret;
+    // Checks.
+    if  (count($this->payload) == 0) return null;
+    // $key is $secret.
     $key = $secret ?? $this->secret;
     $this->header["alg"] = $this->header["alg"] ?? self::HS256;
     $this->header["typ"] = $this->header["typ"] ?? self::JWT;
@@ -94,20 +104,39 @@ class JWT {
     if ($jwt === false) return null;
     if ($jwt != "") $jwt .= ".";
     $payload = base64url_encode(json_encode($this->payload));
-    if ($payload === false) return $this->sign($jwt, $key, $this->header["alg"]);
     $jwt .= $payload;
     if ($key != "") return $this->sign_token($jwt, $key, $this->header["alg"]);
     return $jwt . ".";
   }
-
+  /**
+   * [token description]
+   * @return string [description]
+   */
+  public function token():?string {
+    // Checks.
+    if  (count($this->payload) == 0) return null;
+    // Begin.
+    $this->header["alg"] = self::NONE;
+    return base64url_encode(json_encode($this->header)) . "." . base64url_encode(json_encode($this->payload)) . ".";
+  }
+  /**
+   * [verify description]
+   * @param  string $jwt    [description]
+   * @param  string $secret [description]
+   * @return bool           [description]
+   */
   public function verify(string $jwt, string $secret=null):bool {
+    if (substr_count($jwt, ".") != 2) return false; // Invalid JWT.
     $key = $secret ?? $this->secret;
     $parts = explode(".", $jwt);
     $header = json_decode(base64url_decode($parts[0]) ,true);
     if ($header == null) return false;
     $alg = $header["alg"] ?? self::HS256;
     $payload = json_decode(base64url_decode($parts[1]) ,true);
-    if ($payload == null) return $this->hashmac($alg, $parts[0], $parts[1], $key);
+    if ($payload == null) return false;
+    if ($parts[2] == "") {
+      return $this->allow_unsigned;
+    }
     return $this->hashmac($alg, $parts[0] . "." . $parts[1], $parts[2], $key);
   }
   /**
@@ -133,6 +162,7 @@ class JWT {
    * @return string        Complete JWT.
    */
   private function sign_token(string $token, string $key, string $alg):string {
+    if ($alg == self::NONE) return $token . ".";
     $token = rtrim($token, ".");
     $signature = hash_hmac(self::ALGOS[$alg], $token, $key);
     return $token . "." . $signature;

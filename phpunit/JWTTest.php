@@ -151,6 +151,21 @@ class JWTTest extends TestCase {
     $this->assertEmpty(self::$ci->jwt->payloadArray());
   }
   /**
+   * [testEmptyPayload description]
+   *
+   * @depends testEmpty
+   *
+   * @tesdox Test Signed Empty Payload.
+   */
+  public function testUnsignedToken():void {
+    $this->assertNull(self::$ci->jwt->token());
+    self::$ci->jwt->payload("iss", "server");
+    $jwt = self::$ci->jwt->token();
+    $this->assertFalse(self::$ci->jwt->verify($jwt));
+    self::$ci->jwt->init(["allow_unsigned" => true]);
+    $this->assertTrue(self::$ci->jwt->verify($jwt));
+  }
+  /**
    * [testExpired Test expiry date of jwts.]
    */
   public function testExpired():void {
