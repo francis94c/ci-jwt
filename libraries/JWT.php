@@ -8,12 +8,17 @@ class JWT {
   // Signing Algorithms.
   const HS256 = 'HS256';
 
+  // JWT Standard Algs to PHP Algs.
+  const ALGOS = [
+    self::HS256 => "sha256"
+  ];
+
   // Internal Variables.
   /**
    * [private description]
    * @var [type]
    */
-  private $secret;
+  private $secret = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
   /**
    * [private description]
    * @var [type]
@@ -26,9 +31,15 @@ class JWT {
   private $payload = [];
 
   function __construct($params=null) {
-    if ($params != null) {
-      $this->secret = $params["secret"] ?? "";
-    }
+    if ($params != null) $this->init($params);
+  }
+  /**
+   * [init description]
+   * @param  array  $config [description]
+   * @return [type]         [description]
+   */
+  function init(array $config) {
+    $this->secret = $config["secret"] ?? $this->secret;
   }
   /**
    * [header description]
@@ -69,16 +80,53 @@ class JWT {
   public function sign(string $secret=null):?string {
     // $key is $secret;
     $key = $secret ?? $this->secret;
+    $this->header["alg"] = $this->header["alg"] ?? self::HS256;
     $jwt = base64url_encode(json_encode($this->header));
     if ($jwt === false) return null;
     if ($jwt != "") $jwt .= ".";
     $payload = base64url_encode(json_encode($this->payload));
-    if ($payload === false) return $jwt;
+    if ($payload === false) return $this->sign($jwt, $key, $this->header["alg"]);
     $jwt .= $payload;
-    if ($key != "") return $this->sign_token($jwt, $secret, $this->payload["alg"]);
+    if ($key != "") return $this->sign_token($jwt, $key, $this->header["alg"]);
     return $jwt . ".";
   }
-  private function sign_token(&$token, $key, $alg):string {
+
+  public function verify(string $jwt, string $secret=null):bool {
+    $key = $secret ?? $this->secret;
+    $parts = explode(".", $jwt);
+    $header = json_decode(base64url_decode($parts[0]) ,true);
+    if ($header == null) return false;
+    $alg = $header["alg"] ?? self::HS256;
+    $payload = json_decode(base64url_decode($parts[1]) ,true);
+    if ($payload == null) return $this->hashmac($alg, $parts[0], $parts[1], $key);
+    return $this->hashmac($alg, $parts[0] . "." . $parts[1], $parts[2], $key);
+  }
+  /**
+   * [hashmac description]
+   * @param  string $alg       [description]
+   * @param  string $data      [description]
+   * @param  string $signature [description]
+   * @param  string $secret    [description]
+   * @return bool              [description]
+   */
+  private function hashmac(string $alg, string $data, string $signature, string $secret):bool {
+    return hash_hmac(self::ALGOS[$alg], $data, $secret) === $signature;
+  }
+  /**
+   * [sign_token Sign JWT]
+   *
+   * @param  string $token base64 url encoded header and payload token pair.
+   *
+   * @param  string $key   The scecret used to sign the token.
+   *
+   * @param  string $alg   The algorithm used to sign the token.
+   *
+   * @return string        Complete JWT.
+   */
+  private function sign_token(string $token, string $key, string $alg):string {
+    $token = rtrim($token, ".");
+    $signature = hash_hmac(self::ALGOS[$alg], $token, $key);
+    return $token . "." . $signature;
   }
 }
 ?>

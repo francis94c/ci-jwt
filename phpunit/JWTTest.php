@@ -32,12 +32,13 @@ class JWTTest extends TestCase {
      * alg:     Signing Algorithm.
      * set_iat: Automatically set issued at time on payloads.
      */
-    $params = [
+    $config = [
       "secret"     => "GHfsjfblsgo8r84nNOHHdgdgdgdyf758y8hyttjuoljlhkmjhgO8HOHLHLd",
       "alg"        => "HS256",
       "set_iat"    => true
     ];
-    self::$ci->load->package(self::PACKAGE, $params);
+    self::$ci->load->package(self::PACKAGE);
+    self::$ci->jwt->init($config);
   }
   /**
    * [testHelperMethodsExist Test Helper Method Exist.]
@@ -113,6 +114,29 @@ class JWTTest extends TestCase {
     $this->assertEquals(23456789967, $payload["exp"]);
     $this->assertEquals(12345677778, $payload["iat"]);
     // Verify Signature.
+    $this->assertTrue(self::$ci->jwt->verify($jwt));
+    // Let's Tamper with the JWT's integrity.
+    $payload["sub"] = "john";
+    $jwt = base64url_encode(json_encode($header)) . "." .
+    base64url_encode(json_encode($payload)) . "." . $parts[2];
+    $this->assertFalse(self::$ci->jwt->verify($jwt));
+    // Tamper by signing with a different secret.
+    $signature = hash_hmac(
+      "sha256",
+      base64url_encode(json_encode($header)) . "." .
+      base64url_encode(json_encode($payload)),
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890");
+    $jwt = base64url_encode(json_encode($header)) . "." .
+    base64url_encode(json_encode($payload)) . "." . $signature;
+    // Verify with Original Secret.
+    $this->assertFalse(self::$ci->jwt->verify($jwt));
+    // Verify with fake Secret.
+    $this->assertTrue(self::$ci->jwt->verify($jwt, "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"));
+    // Restore integrity.
+    $payload["sub"] = "francis";
+    $jwt = base64url_encode(json_encode($header)) . "." .
+    base64url_encode(json_encode($payload)) . "." . $parts[2];
+    $this->assertTrue(self::$ci->jwt->verify($jwt));
   }
   /**
    * [testExpired Test expiry date of jwts.]
