@@ -73,6 +73,14 @@ class JWT {
     return $this->payload;
   }
   /**
+   * [create Start afresh, empty/reset header and ]
+   * @return [type] [description]
+   */
+  public function create():void {
+    $this->header = [];
+    $this->payload = [];
+  }
+  /**
    * [sign description]
    * @param  [type] $secret [description]
    * @return [type]         [description]
@@ -81,6 +89,7 @@ class JWT {
     // $key is $secret;
     $key = $secret ?? $this->secret;
     $this->header["alg"] = $this->header["alg"] ?? self::HS256;
+    $this->header["typ"] = $this->header["typ"] ?? self::JWT;
     $jwt = base64url_encode(json_encode($this->header));
     if ($jwt === false) return null;
     if ($jwt != "") $jwt .= ".";
