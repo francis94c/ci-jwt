@@ -164,6 +164,8 @@ class JWTTest extends TestCase {
     $this->assertFalse(self::$ci->jwt->verify($jwt));
     self::$ci->jwt->init(["allow_unsigned" => true]);
     $this->assertTrue(self::$ci->jwt->verify($jwt));
+    // Test auto-generation of time stamp.
+    $this->assertIsNumeric(json_decode(base64url_decode(explode(".", $jwt)[1]), true)["iat"]);
   }
   /**
    * [testExpired Test expiry date of jwts.]

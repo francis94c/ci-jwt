@@ -35,6 +35,11 @@ class JWT {
    * @var bool
    */
   private $allow_unsigned = false;
+  /**
+   * [private Set Issued at Time]
+   * @var bool
+   */
+  private $set_iat = true;
 
   function __construct($params=null) {
     if ($params != null) $this->init($params);
@@ -115,6 +120,7 @@ class JWT {
     if  (count($this->payload) == 0) return null;
     // Begin.
     $this->header["alg"] = self::NONE;
+    if ($this->set_iat) $this->payload["iat"] = $this->payload["iat"] ?? time();
     return base64url_encode(json_encode($this->header)) . "." . base64url_encode(json_encode($this->payload)) . ".";
   }
   /**
