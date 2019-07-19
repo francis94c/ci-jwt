@@ -16,7 +16,6 @@
   "autoload": {
     "libraries" : [
       ["JWT", "jwt"]
-    ],
-    "helpers": ["base64"]
+    ]
   }
 }
