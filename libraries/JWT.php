@@ -144,6 +144,21 @@ class JWT {
     return $this->hashmac($alg, $parts[0] . "." . $parts[1], $parts[2], $key);
   }
   /**
+   * [decode description]
+   * @param  string  $jwt [description]
+   * @return boolean      [description]
+   */
+  public function decode(string $jwt):bool {
+    $parts = explode(".", $jwt);
+    $header = json_decode(base64url_decode($parts[0]), true);
+    if ($header === false) return false;
+    $payload = json_decode(base64url_decode($parts[1]), true);
+    if ($payload === false) return false;
+    $this->header = $header;
+    $this->payload = $payload;
+    return true;
+  }
+  /**
    * [hashmac description]
    * @param  string $alg       [description]
    * @param  string $data      [description]

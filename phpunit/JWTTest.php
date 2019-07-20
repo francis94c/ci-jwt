@@ -166,6 +166,35 @@ class JWTTest extends TestCase {
     $this->assertTrue(self::$ci->jwt->verify($jwt));
     // Test auto-generation of time stamp.
     $this->assertIsNumeric(json_decode(base64url_decode(explode(".", $jwt)[1]), true)["iat"]);
+    self::$ci->jwt->init(["allow_unsigned" => false]);
+  }
+  /**
+   * [testDecode description]
+   *
+   * @depends testUnsignedToken
+   */
+  public function testDecode():void {
+    self::$ci->jwt->create();
+    self::$ci->jwt->header("alg", JWT::HS256);
+    self::$ci->jwt->header("typ", JWT::JWT);
+    self::$ci->jwt->payload("iss", "www.example.com");
+    self::$ci->jwt->payload("sub", "francis");
+    self::$ci->jwt->payload("aud", "my_server");
+    self::$ci->jwt->payload("exp", 23456789967);
+    self::$ci->jwt->payload("iat", 12345677778);
+    // Get Token
+    $jwt = self::$ci->jwt->sign();
+    self::$ci->jwt->create();
+    self::$ci->jwt->decode($jwt);
+    $header = self::$ci->jwt->headerArray();
+    $this->assertEquals(JWT::HS256, $header["alg"]);
+    $this->assertEquals(JWT::JWT, $header["typ"]);
+    $payload = self::$ci->jwt->payloadArray();
+    $this->assertEquals("www.example.com", $payload["iss"]);
+    $this->assertEquals("francis", $payload["sub"]);
+    $this->assertEquals("my_server", $payload["aud"]);
+    $this->assertEquals(23456789967, $payload["exp"]);
+    $this->assertEquals(12345677778, $payload["iat"]);
   }
   /**
    * [testExpired Test expiry date of jwts.]
