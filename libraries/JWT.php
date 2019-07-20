@@ -159,6 +159,15 @@ class JWT {
     return true;
   }
   /**
+   * [expired description]
+   * @param  string $jwt [description]
+   * @return bool        [description]
+   */
+  public function expired(string $jwt=null):bool {
+    $exp = $jwt == null ? ($this->payload["exp"] ?? time()) : $this->get_expired($jwt);
+    return time() >= $exp;
+  }
+  /**
    * [hashmac description]
    * @param  string $alg       [description]
    * @param  string $data      [description]
@@ -168,6 +177,15 @@ class JWT {
    */
   private function hashmac(string $alg, string $data, string $signature, string $secret):bool {
     return hash_hmac(self::ALGOS[$alg], $data, $secret) === $signature;
+  }
+  /**
+   * [get_expired description]
+   * @param  string $jwt [description]
+   * @return int         [description]
+   */
+  private function get_expired(string $jwt):int {
+    $parts = explode(".", $jwt);
+    return json_decode(base64url_decode($parts[1]) ,true)["exp"] ?? time();
   }
   /**
    * [sign_token Sign JWT]

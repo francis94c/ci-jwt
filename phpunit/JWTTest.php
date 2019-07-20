@@ -197,10 +197,27 @@ class JWTTest extends TestCase {
     $this->assertEquals(12345677778, $payload["iat"]);
   }
   /**
-   * [testExpired Test expiry date of jwts.]
+   * [testExpired Test expiry date of JWTs.]
+   *
+   * @depends testDecode
    */
   public function testExpired():void {
-    $this->assertTrue(true);
+    // Internal Check.
+    self::$ci->jwt->payload("exp", time());
+    $this->assertTrue(self::$ci->jwt->expired());
+    self::$ci->jwt->payload("exp", time() + (7 * 24 * 60 * 60));
+    $this->assertFalse(self::$ci->jwt->expired());
+
+    // Supplied Token Check.
+    self::$ci->jwt->payload("exp", time());
+    $jwt = self::$ci->jwt->sign();
+    $this->assertTrue(self::$ci->jwt->expired($jwt));
+    self::$ci->jwt->payload("exp", time() + (7 * 24 * 60 * 60));
+    $jwt = self::$ci->jwt->sign();
+    $this->assertFalse(self::$ci->jwt->expired($jwt));
+    // Empty Expire.
+    self::$ci->jwt->create();
+    $this->assertTrue(self::$ci->jwt->expired());
   }
 }
 ?>
