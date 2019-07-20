@@ -144,6 +144,16 @@ class JWT {
     return $this->hashmac($alg, $parts[0] . "." . $parts[1], $parts[2], $key);
   }
   /**
+   * [expire Sets expiry date of JWT. This basically assigns the return value of
+   *         PHP's 'strtotime()' function to the 'exp' field of the payload,
+   *         passing it the $when argument.
+   *         see https://www.php.net/manual/en/function.strtotime.php]
+   * @param string $when Future time e.g +1 Week, +1 week 2 days 4 hours 2 seconds.
+   */
+  public function expire(string $when):void {
+    $this->payload["exp"] = strtotime($when);
+  }
+  /**
    * [decode description]
    * @param  string  $jwt [description]
    * @return boolean      [description]

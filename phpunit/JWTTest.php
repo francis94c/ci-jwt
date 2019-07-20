@@ -219,5 +219,16 @@ class JWTTest extends TestCase {
     self::$ci->jwt->create();
     $this->assertTrue(self::$ci->jwt->expired());
   }
+  /**
+   * [testSetExpired description]
+   *
+   * @depends testExpired
+   *
+   * @testdox Test Set Expired.
+   */
+  public function testSetExpired():void {
+    self::$ci->jwt->expire("+1 Day");
+    $this->assertFalse(self::$ci->jwt->expired());
+  }
 }
 ?>
