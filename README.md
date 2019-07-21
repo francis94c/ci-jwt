@@ -8,16 +8,21 @@ JSON Web Tokens are an open, industry standard RFC 7519 method for representing 
 
 JWT.IO allows you to decode, verify and generate JWT.
 
-### Installation ###
+## Installation ##
 Download and Install Splint from https://splint.cynobit.com/downloads/splint and run the below from the root of your Code Igniter project.
 ```bash
 splint install francis94c/blog
 ```
-### Usage ###
-How to load your package here.
+## Usage ##
+Load the package and initialize as needed.
 ```php
+$this->load->package("francis94c/ci-jwt");
 $params = [
-  "secret" => "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+  "secret"         => "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+  "algorithm"      => "HS512",
+  "allow_unsigned" => false,
+  "auto_expire"    => "+30 Days"
 ];
-$this->load->package("francis94c/ci-jwt", $params, "jwt");
+$this->jwt-.init($params);
 ```
+### Config/Initialization Parameter ###
