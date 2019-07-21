@@ -122,7 +122,7 @@ class JWT {
     // Generate Issued At Time.
     if ($this->set_iat) $this->payload["iat"] = $this->payload["iat"] ?? time();
     // Auto Expire.
-    if ($this->auto_expire != null) $this->payload["exp"] = strtotime($this->auto_expire);
+    if ($this->auto_expire != null && !isset($this->payload["exp"])) $this->payload["exp"] = strtotime($this->auto_expire);
     $jwt = base64url_encode(json_encode($this->header));
     if ($jwt === false) return null;
     if ($jwt != "") $jwt .= ".";
