@@ -13,7 +13,7 @@ Download and Install Splint from https://splint.cynobit.com/downloads/splint and
 ```bash
 splint install francis94c/blog
 ```
-## Usage ##
+## Documentation ##
 Load the package and initialize as needed.
 ```php
 $this->load->package("francis94c/ci-jwt");
@@ -23,6 +23,23 @@ $params = [
   "allow_unsigned" => false,
   "auto_expire"    => "+30 Days"
 ];
-$this->jwt-.init($params);
+$this->jwt->init($params);
 ```
-### Config/Initialization Parameter ###
+### Config/Initialization Parameters ###
+| Name             | Description                                                                             |
+| ---------------- | --------------------------------------------------------------------------------------- |
+| `secret`         | The Secret Key used to Sign and Verify Tokens                                           |
+| `algorithm`      | The Algorithm used to Sign and Verify Tokens. e.g. HS256                                |
+| `allow_unsigned` | Set this to `true` if you want the `verify` function to return `true` for unsigned token. This config is set to false by default. |
+| `auto_expire`    | Sets the time at which all tokens generated should be considered expired automatically.  |
+
+### Methods ###
+`init(array $config)`
+This function allows you to set a couple of options that influences the behaviour of the library.
+#### Example ####
+```php
+$this->jwt->init([
+  "algorithm"   => JWT::HS512,
+  "auto_expire" => "+30 Days"
+]);
+```
