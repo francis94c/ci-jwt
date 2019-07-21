@@ -9,11 +9,13 @@ class JWT {
   const NONE  = 'none';
   const HS256 = 'HS256';
   const HS512 = 'HS512';
+  const HS384 = 'HS384';
 
   // JWT Standard Algs to PHP Algs.
   const ALGOS = [
     self::HS256 => 'sha256',
-    self::HS512 => 'sha512'
+    self::HS512 => 'sha512',
+    self::HS384 => 'sha384'
   ];
 
   // Internal Variables.
@@ -199,7 +201,7 @@ class JWT {
    * @return bool              [description]
    */
   private function hashmac(string $alg, string $data, string $signature, string $secret):bool {
-    return hash_hmac(self::ALGOS[$alg], $data, $secret) === $signature;
+    return $signature === hash_hmac(self::ALGOS[$alg], $data, $secret);
   }
   /**
    * [get_expired description]
