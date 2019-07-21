@@ -85,18 +85,18 @@ class JWT {
     return $this->header;
   }
   /**
-   * [payload description]
-   * @param string $key   [description]
-   * @param [type] $value [description]
+   * [payload Adds an item/claim with a key to the payload array.]
+   * @param string     $key   JWT Claim
+   * @param string|int $value JWT Claim Value.
    */
   public function payload(string $key, $value):void {
     $this->payload[$key] = $value;
   }
   /**
-   * [payloadarray description]
-   * @return array [description]
+   * [payloadArray Get the payload array.]
+   * @return array The payload array.
    */
-  public function payloadarray(): array {
+  public function payloadArray(): array {
     return $this->payload;
   }
   /**
