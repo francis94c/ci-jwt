@@ -28,12 +28,12 @@ class JWT {
    * [private JWT header array]
    * @var array
    */
-  private $header = [];
+  private $header = array();
   /**
    * [private JWT payload array]
    * @var string
    */
-  private $payload = [];
+  private $payload = array();
   /**
    * [private Allow Unsigned JWT]
    * @var bool
