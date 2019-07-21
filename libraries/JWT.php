@@ -6,12 +6,14 @@ class JWT {
   const JWT = "jwt";
 
   // Signing Algorithms.
-  const NONE  = "none";
+  const NONE  = 'none';
   const HS256 = 'HS256';
+  const HS512 = 'HS512';
 
   // JWT Standard Algs to PHP Algs.
   const ALGOS = [
-    self::HS256 => "sha256"
+    self::HS256 => 'sha256',
+    self::HS512 => 'sha512'
   ];
 
   // Internal Variables.
@@ -40,6 +42,11 @@ class JWT {
    * @var bool
    */
   private $set_iat = true;
+  /**
+   * [private Auto expire at. Argument for PHP 'strtotime' function.]
+   * @var string
+   */
+  private $auto_expire;
 
   function __construct($params=null) {
     if ($params != null) $this->init($params);
@@ -52,6 +59,7 @@ class JWT {
   public function init(array $config) {
     $this->secret = $config["secret"] ?? $this->secret;
     $this->allow_unsigned = $config["allow_unsigned"] ?? $this->allow_unsigned;
+    $this->auto_expire = $config["auto_expire"] ?? $this->auto_expire;
   }
   /**
    * [header Add an item to the header array.]
@@ -103,6 +111,10 @@ class JWT {
     $key = $secret ?? $this->secret;
     $this->header["alg"] = $this->header["alg"] ?? self::HS256;
     $this->header["typ"] = $this->header["typ"] ?? self::JWT;
+    // Generate Issued At Time.
+    if ($this->set_iat) $this->payload["iat"] = $this->payload["iat"] ?? time();
+    // Auto Expire.
+    if ($this->auto_expire != null) $this->payload["exp"] = strtotime($this->auto_expire);
     $jwt = base64url_encode(json_encode($this->header));
     if ($jwt === false) return null;
     if ($jwt != "") $jwt .= ".";
@@ -121,6 +133,7 @@ class JWT {
     // Begin.
     $this->header["alg"] = self::NONE;
     if ($this->set_iat) $this->payload["iat"] = $this->payload["iat"] ?? time();
+    if ($this->auto_expire != null) $this->payload["exp"] = strtotime($this->auto_expire);
     return base64url_encode(json_encode($this->header)) . "." . base64url_encode(json_encode($this->payload)) . ".";
   }
   /**

@@ -164,9 +164,14 @@ class JWTTest extends TestCase {
     $this->assertFalse(self::$ci->jwt->verify($jwt));
     self::$ci->jwt->init(["allow_unsigned" => true]);
     $this->assertTrue(self::$ci->jwt->verify($jwt));
-    // Test auto-generation of time stamp.
+    // Test auto-generation of time stamp with unsigned token.
     $this->assertIsNumeric(json_decode(base64url_decode(explode(".", $jwt)[1]), true)["iat"]);
     self::$ci->jwt->init(["allow_unsigned" => false]);
+    // Test auto-generation of time stamp with signed token.
+    self::$ci->jwt->create();
+    self::$ci->jwt->payload("iss", "server");
+    $jwt = self::$ci->jwt->sign();
+    $this->assertIsNumeric(json_decode(base64url_decode(explode(".", $jwt)[1]), true)["iat"]);
   }
   /**
    * [testDecode description]
@@ -224,11 +229,36 @@ class JWTTest extends TestCase {
    *
    * @depends testExpired
    *
-   * @testdox Test Set Expired.
+   * @testdox Test Set Expiry Date on Token.
    */
   public function testSetExpired():void {
     self::$ci->jwt->expire("+1 Day");
     $this->assertFalse(self::$ci->jwt->expired());
+  }
+  /**
+   * [setDefaultExpiryDate description]
+   *
+   */
+  public function testSetDefaultExpiryDateForSignedToken():void {
+    self::$ci->jwt->create();
+    self::$ci->jwt->payload("iss", "www.example.com");
+    self::$ci->jwt->init(["auto_expire" => "+1 Seconds"]);
+    $jwt = self::$ci->jwt->sign();
+    $this->assertFalse(self::$ci->jwt->expired($jwt));
+    sleep(1); // Allow Token to expire.
+    $this->assertTrue(self::$ci->jwt->expired($jwt));
+  }
+  /**
+   * [testSetDefaultExpiryDateForUnSignedToken description]
+   */
+  public function testSetDefaultExpiryDateForUnSignedToken(): void {
+    self::$ci->jwt->create();
+    self::$ci->jwt->payload("iss", "www.example.com");
+    self::$ci->jwt->init(["auto_expire" => "+1 Seconds"]);
+    $jwt = self::$ci->jwt->token();
+    $this->assertFalse(self::$ci->jwt->expired($jwt));
+    sleep(1); // Allow Token to expire.
+    $this->assertTrue(self::$ci->jwt->expired($jwt));
   }
 }
 ?>
