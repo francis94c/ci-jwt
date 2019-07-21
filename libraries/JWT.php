@@ -49,6 +49,11 @@ class JWT {
    * @var string
    */
   private $auto_expire;
+  /**
+   * [private Default Signing Algorithm]
+   * @var string
+   */
+  private $algorithm;
 
   function __construct($params=null) {
     if ($params != null) $this->init($params);
@@ -62,6 +67,7 @@ class JWT {
     $this->secret = $config["secret"] ?? $this->secret;
     $this->allow_unsigned = $config["allow_unsigned"] ?? $this->allow_unsigned;
     $this->auto_expire = $config["auto_expire"] ?? $this->auto_expire;
+    $this->algorithm = $config["algorithm"] ?? $this->algorithm;
   }
   /**
    * [header Add an item to the header array.]
@@ -111,7 +117,7 @@ class JWT {
     if  (count($this->payload) == 0) return null;
     // $key is $secret.
     $key = $secret ?? $this->secret;
-    $this->header["alg"] = $this->header["alg"] ?? self::HS256;
+    $this->header["alg"] = $this->header["alg"] ?? ($this->algorithm ?? self::HS512);
     $this->header["typ"] = $this->header["typ"] ?? self::JWT;
     // Generate Issued At Time.
     if ($this->set_iat) $this->payload["iat"] = $this->payload["iat"] ?? time();
