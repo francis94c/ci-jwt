@@ -34,12 +34,24 @@ $this->jwt->init($params);
 | `auto_expire`    | Sets the time at which all tokens generated should be considered expired automatically.  |
 
 ### Methods ###
-`init(array $config)`
+
+#### `init(array $config)` ####
+
 This function allows you to set a couple of options that influences the behaviour of the library.
-#### Example ####
+
+##### Example #####
 ```php
 $this->jwt->init([
   "algorithm"   => JWT::HS512,
   "auto_expire" => "+30 Days"
 ]);
+```
+
+#### `header(string $key, string $value)` ####
+
+This function adds an item to the Token's header section. _Note:_ You don't have to always set a header field, unless you want to change the signing algorithm for the current token other than the default set with `init()` as you can see from the example below.
+
+##### Example #####
+```php
+$this->jwt->header("alg", JWT::HS512);
 ```
