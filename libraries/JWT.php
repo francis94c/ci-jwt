@@ -68,13 +68,15 @@ class JWT {
     $this->allow_unsigned = $config["allow_unsigned"] ?? $this->allow_unsigned;
     $this->auto_expire = $config["auto_expire"] ?? $this->auto_expire;
     $this->algorithm = $config["algorithm"] ?? $this->algorithm;
+    $this->set_iat = $config["set_iat"] ?? $this->set_iat;
   }
   /**
    * [header Add an item to the header array.]
    * @param  string     $key   Key of the item. e.g "alg", "typ".
    * @param  string|int $value Value of the item.
    */
-  public function header(string $key, $value):void {
+  public function header(string $key, $value=null) {
+    if ($value === null) return $this->header[$key];
     $this->header[$key] = $value;
   }
   /**
@@ -86,10 +88,12 @@ class JWT {
   }
   /**
    * [payload Adds an item/claim with a key to the payload array.]
-   * @param string     $key   JWT Claim
-   * @param string|int $value JWT Claim Value.
+   * @param  string          $key   JWT Claim
+   * @param  string|int      $value JWT Claim Value.
+   * @return string|int|null Value of $key if $value == null, else returns null.
    */
-  public function payload(string $key, $value):void {
+  public function payload(string $key, $value=null) {
+    if ($value === null) return $this->payload[$key];
     $this->payload[$key] = $value;
   }
   /**
