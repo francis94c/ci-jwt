@@ -14,6 +14,7 @@ Download and Install Splint from https://splint.cynobit.com/downloads/splint and
 splint install francis94c/ci-jwt
 ```
 ## Documentation ##
+Here's an example Usage.
 Load the package and initialize as needed. Then sign or verify token.
 ```php
 $this->load->package("francis94c/ci-jwt");
