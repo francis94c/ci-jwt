@@ -11,7 +11,7 @@ JWT.IO allows you to decode, verify and generate JWT.
 ## Installation ##
 Download and Install Splint from https://splint.cynobit.com/downloads/splint and run the below from the root of your Code Igniter project.
 ```bash
-splint install francis94c/blog
+splint install francis94c/ci-jwt
 ```
 ## Documentation ##
 Load the package and initialize as needed. Then sign or verify token.
