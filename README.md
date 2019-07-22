@@ -79,9 +79,18 @@ $this->jwt->init([
 ]);
 ```
 
+---
+
 #### `create():void` ####
 
 Essentially creates a new token. This results in the clearing of the header and payload array for input of fresh data.
+
+##### Example #####
+```php
+$this->jwt->create();
+```
+
+---
 
 #### `header(string $key, string|int|array $value):void` ####
 
