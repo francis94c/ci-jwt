@@ -69,7 +69,7 @@ if ($this->jwt->verify()) {
 
 #### `init(array $config):void` ####
 
-This function allows you to set a couple of options that influences the behaviour of the library.
+This method allows you to set a couple of options that influences the behaviour of the library.
 
 ##### Example #####
 ```php
@@ -94,13 +94,17 @@ $this->jwt->create();
 
 #### `header(string $key, string|int|array $value):void` ####
 
-This function adds an item in the Token's header section. _Note:_ You don't have to always set a header field, unless you want to change the signing algorithm for the current token other than the default set with `init()` as you can see from the example below.
+This method adds an item in the Token's header section. _Note:_ You don't have to always set a header field, unless you want to change the signing algorithm for the current token other than the default set with `init()` as you can see from the example below. It returns the value of the given key if the `$value` argument is not supplied.
 
 ##### Example #####
 ```php
 $this->jwt->header("alg", JWT::HS512);
 // Supported algorithms are HS256, HS512, & HS384
+
+$alg = $this->jwt->header("alg");
 ```
+
+---
 
 #### `headerArray():array` ####
 
@@ -112,11 +116,42 @@ $header = $this->jwt->headerArray();
 echo $header["alg"];  // "HS256";
 ```
 
+---
+
 #### `payload(string $key, string|int|array $value)` ####
 
-This function adds an item (string, int array, It's JSON after all) to the payload section of an array.
+This method adds an item (string, int array, It's JSON after all) to the payload section of an array. It returns the value of the given key if the `$value` argument is not supplied.
 
 ##### Example #####
 ```php
 $this->jwt->payload("sub", "username");
+
+$sub = $this->jwt->payload("sub");
 ```
+
+---
+
+#### `payloadArray()` ####
+
+This method adds an item (string, int array, It's JSON after all) to the payload section of an array.
+
+##### Example #####
+```php
+$payload = $this->jwt->payloadArray();
+echo $payload["sub"];
+```
+---
+
+#### `sign([string $secret])` ####
+
+This method generates a signed token (JWT), using the secret set with the `init()` function or the `$secret` argument if supplied.
+
+##### Example #####
+```php
+$token = $this->jwt->sign();
+echo $token;
+// OR
+$token = $this->jwt->sign("A_SECRET_KEY_HERE");
+echo $token;
+```
+---
