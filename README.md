@@ -61,6 +61,24 @@ if ($this->jwt->verify()) {
   echo "Invalid Token!";
 }
 ```
+
+You can also load and initialize the package globally by simply creating a cong file named `jwt.php` in `application\config`. The file should have the contents like below.
+```php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+$config["jwt"] = [
+  "secret"         => "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+  "algorithm"      => "HS512",
+  "allow_unsigned" => false,
+  "set_iat"        => true,
+  "auto_expire"    => "+30 Days"
+]
+```
+The `$config` array must have the key `jwt` as above.
+Then you can simply load the package anywhere the CI instance as below.
+```php
+$this->load->package("francis94c/ci-jwt");
+```
 ### Config/Initialization Parameters ###
 | Name             | Description                                                                             |
 | ---------------- | --------------------------------------------------------------------------------------- |
@@ -169,5 +187,20 @@ Returns an unsigned token. will return null if payload is empty. All tokens must
 ```php
 $token = $this->jwt->token();
 echo $token;
+```
+---
+
+#### `verify(string $jwt, [string $secret]):bool` ####
+
+Verifies the signature of the given $jwt and returns true if the check passes. *NB: If an unsigned $jwt is provided and the `allow_unsigned` flag is set to true, the function will automatically return `true`*.
+If a `$secret` is provided with this function, it will use that instead of the one originally set using `init` or a config file.
+
+##### Example #####
+```php
+if ($this->jwt->verify($jwt)) {
+  echo "Successfully Verified Token.";
+} else {
+  echo "Very Very Bad Token.";
+}
 ```
 ---
