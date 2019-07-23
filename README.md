@@ -48,18 +48,6 @@ if ($this->jwt->verify($token)) {
 } else {
   echo "Invalid Token!";
 }
-
-// OR
-
-$this->jwt->create(); // Clears payload and header array. This is required when working with fresh token data.
-$this->jwt->decode($token);
-if ($this->jwt->verify()) {
-  $sub = $this->jwt->payloadArray()["sub"];
-  $iss = $this->jwt->payload("iss");
-  // Other Procedures Here.
-} else {
-  echo "Invalid Token!";
-}
 ```
 
 You can also load and initialize the package globally by simply creating a cong file named `jwt.php` in `application\config`. The file should have the contents like below.
