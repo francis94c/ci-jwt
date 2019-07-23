@@ -8,6 +8,10 @@ JSON Web Tokens are an open, industry standard RFC 7519 method for representing 
 
 JWT.IO allows you to decode, verify and generate JWT.
 
+This library does not support JWE, JOSE, or Asymetric Key Signing, but basic anti-tamper checks which the RFC 7519 standards define.
+
+For good security or encryption, consider using PASETO.
+
 ## Installation ##
 Download and Install Splint from https://splint.cynobit.com/downloads/splint and run the below from the root of your Code Igniter project.
 ```bash
@@ -62,7 +66,7 @@ if ($this->jwt->verify()) {
 | ---------------- | --------------------------------------------------------------------------------------- |
 | `secret`         | The Secret Key used to Sign and Verify Tokens                                           |
 | `algorithm`      | The Algorithm used to Sign and Verify Tokens. e.g. HS256                                |
-| `allow_unsigned` | Set this to `true` if you want the `verify` function to return `true` for unsigned token. This config is set to false by default. |
+| `allow_unsigned` | Set this to `true` if you want the `verify` function to return `true` for unsigned token. This config is set to false by default. For security reason. leave it at that, Unless you know what you are doing.|
 | `set_iat`        | Set this to true if you want the `iat` claim to be set to the time the token was created when you extract/sign the token by calling the `sign()` function. |
 | `auto_expire`    | Sets the time at which all tokens generated should be considered expired automatically.  |
 
@@ -143,9 +147,9 @@ echo $payload["sub"];
 ```
 ---
 
-#### `sign([string $secret])` ####
+#### `sign([string $secret]):?string` ####
 
-This method generates a signed token (JWT), using the secret set with the `init()` function or the `$secret` argument if supplied.
+This method generates a signed token (JWT), using the secret set with the `init()` function or the `$secret` argument if supplied. All tokens must have a payload. headers are automatically generated for you if you don't set them.
 
 ##### Example #####
 ```php
@@ -153,6 +157,17 @@ $token = $this->jwt->sign();
 echo $token;
 // OR
 $token = $this->jwt->sign("A_SECRET_KEY_HERE");
+echo $token;
+```
+---
+
+#### `token():?string` ####
+
+Returns an unsigned token. will return null if payload is empty. All tokens must have a payload. headers are automatically generated for you if you don't set them.
+
+##### Example #####
+```php
+$token = $this->jwt->token();
 echo $token;
 ```
 ---
