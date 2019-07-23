@@ -192,3 +192,17 @@ if ($this->jwt->verify($jwt)) {
 }
 ```
 ---
+
+#### `expire(string $when):void` ####
+
+Set's the current token to expire at a given time `$when`. You'll usually call this function before calling `sign()` or `token()` to get the actual JWT whose expiry date has been set with this function.
+
+This functions internally calls PHP's `strtotime` function, passing it the $when argument and setting the return value of this function (a timestamp) to the `exp` claim/key of the payload.
+
+See https://www.php.net/manual/en/function.strtotime.php for an overview of `strtotime`.
+
+##### Example #####
+```php
+$this->jwt->expire("+1 Day");
+```
+---
