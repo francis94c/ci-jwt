@@ -103,7 +103,7 @@ $this->jwt->create();
 
 ---
 
-#### `header(string $key, string|int|array $value):void` ####
+#### `header(string $key, string|int|array $value):?string|int|array` ####
 
 This method adds an item in the Token's header section. _Note:_ You don't have to always set a header field, unless you want to change the signing algorithm for the current token other than the default set with `init()` as you can see from the example below. It returns the value of the given key if the `$value` argument is not supplied.
 
@@ -129,7 +129,7 @@ echo $header["alg"];  // "HS256";
 
 ---
 
-#### `payload(string $key, string|int|array $value)` ####
+#### `payload(string $key, string|int|array $value):?string|int|array` ####
 
 This method adds an item (string, int array, It's JSON after all) to the payload section of an array. It returns the value of the given key if the `$value` argument is not supplied.
 
@@ -142,7 +142,7 @@ $sub = $this->jwt->payload("sub");
 
 ---
 
-#### `payloadArray()` ####
+#### `payloadArray():array` ####
 
 This method adds an item (string, int array, It's JSON after all) to the payload section of an array.
 
