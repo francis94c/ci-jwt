@@ -206,3 +206,13 @@ See https://www.php.net/manual/en/function.strtotime.php for an overview of `str
 $this->jwt->expire("+1 Day");
 ```
 ---
+
+#### `decode(string $jwt):bool` ####
+
+Decodes the given `$jwt` and sets the contents of it's payload accessible with `$this->jwt->payload()` to the payload of the `$jwt` and the header accessible with `$this->jwt->header` to the header of the `$jwt`. This function does not verify the token. The token only need be a valid JWT. to verify the token, use the `$this->jwt->verify($jwt)`.
+
+##### Example #####
+```php
+$this->jwt->decode($jwt);
+```
+---
