@@ -207,6 +207,16 @@ $this->jwt->expire("+1 Day");
 ```
 ---
 
+#### `expired(string $jwt):bool` ####
+
+Checks if token is expired. Returns true if expired, false if not.
+
+##### Example #####
+```php
+$this->jwt->expired($jwt);
+```
+---
+
 #### `decode(string $jwt):bool` ####
 
 Decodes the given `$jwt` and sets the contents of it's payload accessible with `$this->jwt->payload()` to the payload of the `$jwt` and the header accessible with `$this->jwt->header` to the header of the `$jwt`. This function does not verify the token. The token only need be a valid JWT. to verify the token, use the `$this->jwt->verify($jwt)`.
@@ -215,15 +225,5 @@ This function returns true if successful, false if not.
 ##### Example #####
 ```php
 $this->jwt->decode($jwt);
-```
----
-
-#### `expired(string $jwt):bool` ####
-
-Checks if token is expired. Returns true if expired, false if not.
-
-##### Example #####
-```php
-$this->jwt->expired($jwt);
 ```
 ---
