@@ -90,11 +90,22 @@ class JWT {
    * [payload Adds an item/claim with a key to the payload array.]
    * @param  string          $key   JWT Claim
    * @param  string|int      $value JWT Claim Value.
-   * @return string|int|null Value of $key if $value == null, else returns null.
+   * @return mixed                  Value of $key if $value == null, else
+   *                                returns null.
    */
-  public function payload(string $key, $value=null) {
+  public function payload(string $key, $value=null):?mixed {
     if ($value === null) return $this->payload[$key];
     $this->payload[$key] = $value;
+  }
+  /**
+   * [iss Convinient function for setting the iss claim]
+   * @param  mixed $iss Value to set the 'iss' claim to.
+   * @return mixed      Value of the 'iss' claim, if the $iss argument wasn't
+   *                    supplied. Otherwise, null.
+   */
+  public function iss(string $iss=null):?mixed {
+    if ($iss === null) return $this->payload['iss'];
+    $this->payload['iss'] = $iss;
   }
   /**
    * [payloadArray Get the payload array.]
