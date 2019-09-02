@@ -180,7 +180,7 @@ echo $token;
 
 #### `verify(string $jwt, [string $secret]):bool` ####
 
-Verifies the signature of the given $jwt and returns true if the check passes. __NB: If an unsigned $jwt is provided and the `allow_unsigned` flag is set to true, the function will automatically return `true`__.
+Verifies the signature of the given `$jwt` and returns true if the check passes. __NB: If an unsigned $jwt is provided and the `allow_unsigned` flag is set to true, the function will automatically return `true`__.
 If a `$secret` is provided with this function, it will use that instead of the one originally set using `init` or a config file.
 
 ##### Example #####
