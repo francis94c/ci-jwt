@@ -68,13 +68,16 @@ Then you can simply load the package anywhere the CI instance as below.
 $this->load->package("francis94c/ci-jwt");
 ```
 ### Config/Initialization Parameters ###
-| Name             | Description                                                                             |
-| ---------------- | --------------------------------------------------------------------------------------- |
-| `secret`         | The Secret Key used to Sign and Verify Tokens                                           |
-| `algorithm`      | The Algorithm used to Sign and Verify Tokens. e.g. HS256                                |
-| `allow_unsigned` | Set this to `true` if you want the `verify` function to return `true` for unsigned token. This config is set to false by default. For security reason. leave it at that, Unless you know what you are doing.|
-| `set_iat`        | Set this to true if you want the `iat` claim to be set to the time the token was created when you extract/sign the token by calling the `sign()` function. |
-| `auto_expire`    | Sets the time at which all tokens generated should be considered expired automatically.  |
+#### `secret` ####
+The Secret Key used to Sign and Verify Tokens.
+#### `algorithm` ####
+The Algorithm used to Sign and Verify Tokens. e.g. HS256.
+#### `allow_unsigned` ####
+Set this to `true` if you want the `verify` function to return `true` for unsigned token. This config is set to false by default. For security reason. leave it at that, Unless you know what you are doing.
+#### `set_iat` ####
+Set this to true if you want the `iat` claim to be set to the time the token was created when you extract/sign the token by calling the `sign()` function.
+#### `auto_expire` ####
+Sets the time at which all tokens generated should be considered expired automatically.
 
 ### Methods ###
 
