@@ -69,6 +69,7 @@ $this->load->package("francis94c/ci-jwt");
 ```
 ### Config/Initialization Parameters ###
 | Name             | Description                                                                             |
+
 | ---------------- | --------------------------------------------------------------------------------------- |
 | `secret`         | The Secret Key used to Sign and Verify Tokens                                           |
 | `algorithm`      | The Algorithm used to Sign and Verify Tokens. e.g. HS256                                |
