@@ -1,8 +1,12 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class JWT {
-
+class JWT
+{
+  /**
+   * [JWT description]
+   * @var string
+   */
   const JWT = "jwt";
 
   // Signing Algorithms.
@@ -18,44 +22,55 @@ class JWT {
     self::HS384 => 'sha384'
   ];
 
-  // Internal Variables.
   /**
    * [private Default Signing Secret]
    * @var string
    */
   private $secret = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+
   /**
    * [private JWT header array]
    * @var array
    */
   private $header = array();
+
   /**
    * [private JWT payload array]
    * @var string
    */
   private $payload = array();
+
   /**
    * [private Allow Unsigned JWT]
    * @var bool
    */
   private $allow_unsigned = false;
+
   /**
    * [private Set Issued at Time]
    * @var bool
    */
   private $set_iat = true;
+
   /**
    * [private Auto expire at. Argument for PHP 'strtotime' function.]
    * @var string
    */
   private $auto_expire;
+
   /**
    * [private Default Signing Algorithm]
    * @var string
    */
   private $algorithm;
 
-  function __construct($params=null) {
+  /**
+   * [__construct description]
+   * @date  2020-03-28
+   * @param [type]     $params [description]
+   */
+  public function __construct(?array $params=null)
+  {
     if ($params != null) $this->init($params);
     get_instance()->load->splint("francis94c/ci-jwt", "%base64");
   }
@@ -159,6 +174,7 @@ class JWT {
     if ($this->auto_expire != null) $this->payload["exp"] = strtotime($this->auto_expire);
     return base64url_encode(json_encode($this->header)) . "." . base64url_encode(json_encode($this->payload)) . ".";
   }
+
   /**
    * [verify description]
    * @param  string $jwt    [description]
@@ -171,7 +187,7 @@ class JWT {
     $parts = explode(".", $jwt);
     $header = json_decode(base64url_decode($parts[0]) ,true);
     if ($header == null) return false;
-    $alg = $header["alg"] ?? self::HS256;
+    $alg = $this->algorithm ?? $header["alg"] ?? self::HS256;
     $payload = json_decode(base64url_decode($parts[1]) ,true);
     if ($payload == null) return false;
     if ($parts[2] == "") {
