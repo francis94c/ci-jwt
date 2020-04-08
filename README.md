@@ -42,7 +42,7 @@ $token = $this->jwt->sign();
 if ($this->jwt->verify($token)) {
   $this->jwt->create(); // Clears payload and header array. This is required when working with fresh token data.
   $this->jwt->decode($token);
-  $sub = $this->jwt->payloadArray()["sub"];
+  $sub = $this->jwt->payload()["sub"];
   $iss = $this->jwt->payload("iss");
   // Other Procedures Here.
 } else {
@@ -123,7 +123,7 @@ Returns an associative array representing the contents of the token header.
 
 ##### Example #####
 ```php
-$header = $this->jwt->headerArray();
+$header = $this->jwt->header();
 echo $header["alg"];  // "HS256";
 ```
 
@@ -148,7 +148,7 @@ This method adds an item (string, int array, It's JSON after all) to the payload
 
 ##### Example #####
 ```php
-$payload = $this->jwt->payloadArray();
+$payload = $this->jwt->payload();
 echo $payload["sub"];
 ```
 ---
