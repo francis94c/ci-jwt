@@ -117,18 +117,6 @@ $alg = $this->jwt->header("alg");
 
 ---
 
-#### `headerArray():array` ####
-
-Returns an associative array representing the contents of the token header.
-
-##### Example #####
-```php
-$header = $this->jwt->header();
-echo $header["alg"];  // "HS256";
-```
-
----
-
 #### `payload(string $key, string|int|array $value):?string|int|array` ####
 
 This method adds an item (string, int array, It's JSON after all) to the payload section of an array. It returns the value of the given key if the `$value` argument is not supplied.
@@ -146,17 +134,6 @@ $sub = $this->jwt->payload("sub");
 $sub = $this->jwt->sub();
 ```
 
----
-
-#### `payloadArray():array` ####
-
-This method adds an item (string, int array, It's JSON after all) to the payload section of an array.
-
-##### Example #####
-```php
-$payload = $this->jwt->payload();
-echo $payload["sub"];
-```
 ---
 
 #### `sign([string $secret]):?string` ####
