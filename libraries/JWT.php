@@ -79,12 +79,14 @@ class JWT
    * [init For setting config variables.]
    * @param  array  $config Config Options.
    */
-  public function init(array $config) {
+  public function init(array $config):JWT
+  {
     $this->secret = $config["secret"] ?? $this->secret;
     $this->allow_unsigned = $config["allow_unsigned"] ?? $this->allow_unsigned;
     $this->auto_expire = $config["auto_expire"] ?? $this->auto_expire;
     $this->algorithm = $config["algorithm"] ?? $this->algorithm;
     $this->set_iat = $config["set_iat"] ?? $this->set_iat;
+    return $this;
   }
 
   /**
