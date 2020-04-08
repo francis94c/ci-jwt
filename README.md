@@ -136,8 +136,14 @@ This method adds an item (string, int array, It's JSON after all) to the payload
 ##### Example #####
 ```php
 $this->jwt->payload("sub", "username");
+// OR
+$this->jwt->sub("username");
+
+// ============
 
 $sub = $this->jwt->payload("sub");
+// OR
+$sub = $this->jwt->sub();
 ```
 
 ---
