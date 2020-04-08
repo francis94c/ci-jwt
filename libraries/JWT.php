@@ -103,21 +103,27 @@ class JWT
 
   /**
    * [header Add an item to the header array.]
-   * @param  string     $key   Key of the item. e.g "alg", "typ".
-   * @param  string|int $value Value of the item.
+   * @param  string|null     $key   Key of the item. e.g "alg", "typ".
+   * @param  string|int|null $value Value of the item.
+   *
+   * @return mixed           The value of the given key in the header array
+   *                         if specified, or the header array if no key is
+   *                         specified. Method chaining is supported.
    */
-  public function header(string $key, $value=null)
+  public function header(?string $key=null, $value=null)
   {
+    if (!$key) return $this->header;
     if ($value === null) return $this->header[$key];
     $this->header[$key] = $value;
     return $this;
   }
 
   /**
-   * [headerArray Returns the header array.]
-   * @return array Header Array.
+   * [headerArray Get the header array.]
+   * @deprecated
+   * @return array JWT header array.
    */
-  public function headerArray(): array
+  public function headerArray():array
   {
     return $this->header;
   }
@@ -126,11 +132,13 @@ class JWT
    * [payload Adds an item/claim with a key to the payload array.]
    * @param  string      $key   JWT Claim
    * @param  mixed       $value JWT Claim Value.
-   * @return mixed|none         Value of $key if $value == null, else
-   *                            returns none[NOTHING].
+   *
+   * @return mixed|null Value of $key if $value == null, payload array if $key
+   *                    == null. Method chaining supported.
    */
-  public function payload(string $key, $value=null)
+  public function payload(?string $key=null, $value=null)
   {
+    if (!$key) return $this->payload;
     if ($value === null) return $this->payload[$key];
     $this->payload[$key] = $value;
     return $this;
@@ -165,6 +173,7 @@ class JWT
 
   /**
    * [payloadArray Get the payload array.]
+   * @deprecated
    * @return array The payload array.
    */
   public function payloadArray(): array
@@ -173,8 +182,8 @@ class JWT
   }
 
   /**
-   * [create Start afresh, empty/reset header and ]
-   * @return [type] [description]
+   * [Creat/Start afresh, empty/reset header and payload array.]
+   * @return JWT Method Chaining.
    */
   public function create():JWT
   {
