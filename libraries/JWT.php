@@ -32,13 +32,13 @@ class JWT
    * [private JWT header array]
    * @var array
    */
-  private $header = array();
+  private $header = [];
 
   /**
    * [private JWT payload array]
-   * @var string
+   * @var array
    */
-  private $payload = array();
+  private $payload = [];
 
   /**
    * [private Allow Unsigned JWT]
@@ -59,15 +59,15 @@ class JWT
   private $auto_expire;
 
   /**
-   * [private Default Signing Algorithm]
+   * [private Default signing algorithm]
    * @var string
    */
   private $algorithm;
 
   /**
-   * [__construct description]
+   * [__construct Package constructor.]
    * @date  2020-03-28
-   * @param [type]     $params [description]
+   * @param [type] $params Config array.
    */
   public function __construct(?array $params=null)
   {
