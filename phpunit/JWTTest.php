@@ -221,8 +221,9 @@ class JWTTest extends TestCase {
     $jwt = self::$ci->jwt->sign();
     $this->assertFalse(self::$ci->jwt->expired($jwt));
     // Empty Expire.
+    // Absent exp field means token cannot expire.
     self::$ci->jwt->create();
-    $this->assertTrue(self::$ci->jwt->expired());
+    $this->assertFalse(self::$ci->jwt->expired());
   }
   /**
    * [testSetExpired description]
